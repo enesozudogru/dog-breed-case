@@ -25,69 +25,73 @@ class BreedList extends StatelessWidget {
           alignment: Alignment.center,
           child: Material(
             color: Colors.transparent,
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 50, left: 12, right: 12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Stack(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 50, left: 12, right: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        height: 340,
-                        width: 340,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-                          image: DecorationImage(
-                            image: CachedNetworkImageProvider(breed.image),
-                            fit: BoxFit.cover,
+                      Stack(
+                        children: [
+                          Container(
+                            height: constraints.maxWidth,
+                            width: constraints.maxWidth,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                              image: DecorationImage(
+                                image: CachedNetworkImageProvider(breed.image),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: const CircleAvatar(radius: 16, backgroundColor: Colors.white, child: Icon(Icons.close_rounded, size: 16)),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 25),
+                      const Text("Breed", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.secondaryText)),
+                      const Divider(indent: 30, endIndent: 30),
+                      Text(breed.name, style: const TextStyle(fontSize: 16, color: Colors.black)),
+                      const SizedBox(height: 20),
+                      const Text("Sub Breed", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.secondaryText)),
+                      const Divider(indent: 30, endIndent: 30),
+                      ...breed.subBreeds.map(
+                        (subBreedName) => Text(subBreedName, style: const TextStyle(fontSize: 16, color: Colors.black)),
+                      ),
+                      const SizedBox(height: 25),
+                      Container(
+                        width: double.infinity,
+                        height: 56,
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            final breedService = locator<BreedService>();
+                            var image = await breedService.getRandomImage(breed.name);
+                            if (context.mounted) {
+                              _showImagePopup(context, image);
+                            }
+                          },
+                          child: const Text('Generate'),
                         ),
                       ),
-                      Positioned(
-                        top: 10,
-                        right: 10,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: const CircleAvatar(radius: 16, backgroundColor: Colors.white, child: Icon(Icons.close_rounded, size: 16)),
-                        ),
-                      )
+                      const SizedBox(height: 15),
                     ],
                   ),
-                  const SizedBox(height: 25),
-                  const Text("Breed", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.secondaryText)),
-                  const Divider(indent: 30, endIndent: 30),
-                  Text(breed.name, style: const TextStyle(fontSize: 16, color: Colors.black)),
-                  const SizedBox(height: 20),
-                  const Text("Sub Breed", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.secondaryText)),
-                  const Divider(indent: 30, endIndent: 30),
-                  ...breed.subBreeds.map(
-                    (subBreedName) => Text(subBreedName, style: const TextStyle(fontSize: 16, color: Colors.black)),
-                  ),
-                  const SizedBox(height: 25),
-                  Container(
-                    width: double.infinity,
-                    height: 56,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        final breedService = locator<BreedService>();
-                        var image = await breedService.getRandomImage(breed.name);
-                        if (context.mounted) {
-                          _showImagePopup(context, image);
-                        }
-                      },
-                      child: const Text('Generate'),
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                ],
-              ),
+                );
+              }
             ),
           ),
         );
