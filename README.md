@@ -1,7 +1,4 @@
-# Project Name
-
-**Dog Breeds Case App with Flutter Bloc**
-
+# Dog Breeds Case App with Flutter Bloc
 
 <img src="https://github.com/user-attachments/assets/bf9b4816-faf4-4d5c-a205-36ce02887f73" width="200">
 <img src="https://github.com/user-attachments/assets/590fea14-3d69-4dff-8341-55fd3f9831f4" width="200">
