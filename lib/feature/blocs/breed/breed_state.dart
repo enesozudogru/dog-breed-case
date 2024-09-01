@@ -10,10 +10,12 @@ class BreedLoaded extends BreedState {
   final List<BreedModel> breeds;
 
   BreedLoaded(this.breeds);
+
 }
 
 class BreedFiltered extends BreedState {
   final List<BreedModel> filteredBreeds;
+
   BreedFiltered(this.filteredBreeds);
 }
 

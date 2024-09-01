@@ -19,7 +19,6 @@ class _SearchTextFieldState extends State<SearchTextField> {
   double _inputHeight = 64.0;
   bool _isExpanded = false;
 
-
   @override
   Widget build(BuildContext context) {
     final double availableHeight = MediaQuery.of(context).size.height - widget.appBarHeight - kToolbarHeight - widget.bottomNavBarHeight;
@@ -86,6 +85,8 @@ class _SearchTextFieldState extends State<SearchTextField> {
                         _isExpanded = false;
                         _inputHeight = 64.0;
                       });
+                      context.read<BreedBloc>().add(FilterBreeds(value));
+
                       FocusScope.of(context).unfocus();
                     },
                     decoration: InputDecoration(
@@ -94,8 +95,6 @@ class _SearchTextFieldState extends State<SearchTextField> {
                       border: InputBorder.none,
                     ),
                     keyboardType: TextInputType.text,
-                    onChanged: (value) {
-                    },
                   ),
                 ),
               ],

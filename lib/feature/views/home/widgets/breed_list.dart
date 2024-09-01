@@ -170,17 +170,18 @@ class BreedList extends StatelessWidget {
         builder: (context, state) {
           if (state is BreedLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is BreedLoaded) {
+          } else if (state is BreedLoaded || state is BreedFiltered) {
+            final breeds = state is BreedFiltered ? state.filteredBreeds : (state as BreedLoaded).breeds;
             return GridView.builder(
               padding: const EdgeInsets.only(bottom: 70),
-              itemCount: state.breeds.length,
+              itemCount: breeds.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 16.0,
                 mainAxisSpacing: 16.0,
               ),
               itemBuilder: (context, index) {
-                BreedModel breed = state.breeds[index];
+                BreedModel breed = breeds[index];
                 return InkWell(
                   onTap: () {
                     _showPopup(context, breed);

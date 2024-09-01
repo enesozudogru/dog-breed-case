@@ -18,5 +18,22 @@ class BreedBloc extends Bloc<BreedEvent, BreedState> {
         emit(BreedError("Failed to fetch Breeds $e"));
       }
     });
+
+    on<FilterBreeds>((event, emit) async {
+      try {
+        emit(BreedLoading());
+
+        if (event.query.isEmpty) {
+          emit(BreedLoaded(_allBreeds));
+        } else {
+          final filteredBreeds = _allBreeds.where((breed) => breed.name.toLowerCase().contains(event.query.toLowerCase())).toList();
+          emit(BreedFiltered(filteredBreeds));
+        }
+      } catch (e) {
+        emit(BreedError("Failed to fetch and filter breeds: $e"));
+      }
+    });
+
+
   }
 }
